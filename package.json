@@ -1,0 +1,16 @@
+{
+  "name": "poc-zip-enc-dec-unzip",
+  "version": "1.0.0",
+  "description": "Implemention of creating (zip/encryption/decryption/unZip)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Keerthi Niranjan <keerthiniranjan16@gmail.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "archiver": "^2.0.0",
+    "crypto": "0.0.3",
+    "unzip2": "^0.2.5"
+  }
+}
