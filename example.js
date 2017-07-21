@@ -21,11 +21,19 @@ var demo = require('./index');
  * encrypting and zipping
  * @param key for encrypting
  */
-demo.zipAndEncrypt('./realFolder', 'sample@123123');
+demo.zipAndEncrypt('./realFolder', 'sample@123123', function (err, res) {
+    if (err) throw err;
+
+    console.log(res);
+});
 
 /**
  * @param pass the encrypted file created
  * from the zipAndEncrypt()
  * @param key for decrypting
  */
-demo.decryptAndUnZip('./temp.enc', 'sample@123123');
+demo.decryptAndUnZip('./temp.enc', 'sample@123123', function (err, res) {
+    if (err) throw err;
+
+    console.log(res);
+});

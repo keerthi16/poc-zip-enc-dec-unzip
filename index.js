@@ -24,8 +24,9 @@ const unzip = require('unzip2');
  *
  * @param inputFolder
  * @param encKey
+ * @param callback
  */
-zipAndEncrypt = function (inputFolder, encKey) {
+zipAndEncrypt = function (inputFolder, encKey, callback) {
     var output = fs.createWriteStream('./out.zip');
 
     output.on('close', function () {
@@ -34,9 +35,8 @@ zipAndEncrypt = function (inputFolder, encKey) {
         const outputEncy = fs.createWriteStream('temp.enc');
 
         input.pipe(cipher).pipe(outputEncy).on('finish', function (err, res) {
-            if (err) throw err;
-
-            console.log('done')
+            if (err) return callback(err, null);
+            return callback(null, 'Successful');
         });
     });
 
@@ -53,17 +53,17 @@ zipAndEncrypt = function (inputFolder, encKey) {
  *
  * @param inputEncFile
  * @param decKey
+ * @param callback
  */
-decryptAndUnZip = function (inputEncFile, decKey) {
+decryptAndUnZip = function (inputEncFile, decKey, callback) {
     const decipher = crypto.createDecipher('aes192', decKey);
     const input = fs.createReadStream(inputEncFile);
     const output = fs.createWriteStream('./test.zip');
 
     input.pipe(decipher).pipe(output).on('finish', function () {
         fs.createReadStream('./test.zip').pipe(unzip.Extract({path: 'finalOut'})).on('close', function (err, res) {
-            if (err) throw err;
-
-            console.log('done');
+            if (err) return callback(err, null);
+            return callback(null, 'Successful');
         });
     });
 };
