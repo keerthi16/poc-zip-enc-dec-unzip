@@ -18,7 +18,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 const archiver = require('archiver');
 const zipArchive = archiver('zip');
-const unzip = require('unzip2');
+const extract = require('extract-zip');
 
 /**
  *
@@ -60,11 +60,24 @@ decryptAndUnZip = function (inputEncFile, decKey, callback) {
     const input = fs.createReadStream(inputEncFile);
     const output = fs.createWriteStream('./test.zip');
 
+    function unzip() {
+        var path = __dirname + '/finalOut';
+        extract('./test.zip', {dir: path}, function (err) {
+            if (err) throw err;
+            return callback;
+        })
+    }
+
     input.pipe(decipher).pipe(output).on('finish', function () {
-        fs.createReadStream('./test.zip').pipe(unzip.Extract({path: 'finalOut'})).on('close', function (err, res) {
-            if (err) return callback(err, null);
-            return callback(null, 'Successful');
-        });
+        var readStream = fs.createReadStream('./test.zip');
+        readStream
+            .on('data', function (data) {
+                if (!data) throw "error reading zip";
+                unzip();
+            })
+            .on('error', function(error){
+                console.log('Error:', error.message);
+            });
     });
 };
 

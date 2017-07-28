@@ -11,6 +11,6 @@
   "dependencies": {
     "archiver": "^2.0.0",
     "crypto": "0.0.3",
-    "unzip2": "^0.2.5"
+    "extract-zip": "latest"
   }
 }
